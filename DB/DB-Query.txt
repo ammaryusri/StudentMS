@@ -1,0 +1,115 @@
+/****** Object:  Table [dbo].[Teachers]    Script Date: 7/7/2023 4:01:03 PM ******/
+
+CREATE TABLE [dbo].[Teachers](
+	[TeacherId] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](500) NOT NULL,
+	[LastName] [varchar](500) NOT NULL,
+	[ContactNo] [varchar](20) NOT NULL,
+	[EmailAddress] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Teachers] PRIMARY KEY CLUSTERED 
+(
+	[TeacherId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[Student]    Script Date: 7/7/2023 4:10:47 PM ******/
+
+CREATE TABLE [dbo].[Student](
+	[StudentId] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[ContactPerson] [varchar](50) NOT NULL,
+	[ContactNo] [varchar](20) NOT NULL,
+	[EmailAddress] [varchar](100) NOT NULL,
+	[DateOfBirth] [date] NOT NULL,
+	[Age] [int] NOT NULL,
+	[ClassroomId] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[StudentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Student]  WITH CHECK ADD FOREIGN KEY([ClassroomId])
+REFERENCES [dbo].[Classrooms] ([ClassroomId])
+GO
+
+/****** Object:  Table [dbo].[Subjects]    Script Date: 7/7/2023 4:11:33 PM ******/
+
+CREATE TABLE [dbo].[Subjects](
+	[SubjectId] [int] IDENTITY(1,1) NOT NULL,
+	[SubjectName] [varchar](500) NOT NULL,
+ CONSTRAINT [PK_Subjects] PRIMARY KEY CLUSTERED 
+(
+	[SubjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[Classrooms]    Script Date: 7/7/2023 4:12:06 PM ******/
+
+CREATE TABLE [dbo].[Classrooms](
+	[ClassroomId] [int] IDENTITY(1,1) NOT NULL,
+	[ClassroomName] [varchar](500) NOT NULL,
+ CONSTRAINT [PK_Classrooms] PRIMARY KEY CLUSTERED 
+(
+	[ClassroomId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[AllocateSubjects]    Script Date: 7/7/2023 4:12:31 PM ******/
+
+CREATE TABLE [dbo].[AllocateSubjects](
+	[AllocateSubjectID] [int] IDENTITY(1,1) NOT NULL,
+	[TeacherId] [int] NOT NULL,
+	[SubjectId] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AllocateSubjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[AllocateSubjects]  WITH CHECK ADD  CONSTRAINT [FK_AllocateSubjects_Subjects] FOREIGN KEY([SubjectId])
+REFERENCES [dbo].[Subjects] ([SubjectId])
+GO
+
+ALTER TABLE [dbo].[AllocateSubjects] CHECK CONSTRAINT [FK_AllocateSubjects_Subjects]
+GO
+
+ALTER TABLE [dbo].[AllocateSubjects]  WITH CHECK ADD  CONSTRAINT [FK_AllocateSubjects_Teachers] FOREIGN KEY([TeacherId])
+REFERENCES [dbo].[Teachers] ([TeacherId])
+GO
+
+ALTER TABLE [dbo].[AllocateSubjects] CHECK CONSTRAINT [FK_AllocateSubjects_Teachers]
+GO
+
+/****** Object:  Table [dbo].[AllocateClassrooms]    Script Date: 7/7/2023 4:13:02 PM ******/
+
+CREATE TABLE [dbo].[AllocateClassrooms](
+	[AllocateClassroomID] [int] IDENTITY(1,1) NOT NULL,
+	[TeacherId] [int] NOT NULL,
+	[ClassroomId] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AllocateClassroomID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[AllocateClassrooms]  WITH CHECK ADD  CONSTRAINT [FK_AllocateClassrooms_Classrooms] FOREIGN KEY([ClassroomId])
+REFERENCES [dbo].[Classrooms] ([ClassroomId])
+GO
+
+ALTER TABLE [dbo].[AllocateClassrooms] CHECK CONSTRAINT [FK_AllocateClassrooms_Classrooms]
+GO
+
+ALTER TABLE [dbo].[AllocateClassrooms]  WITH CHECK ADD  CONSTRAINT [FK_AllocateClassrooms_Teachers] FOREIGN KEY([TeacherId])
+REFERENCES [dbo].[Teachers] ([TeacherId])
+GO
+
+ALTER TABLE [dbo].[AllocateClassrooms] CHECK CONSTRAINT [FK_AllocateClassrooms_Teachers]
+GO
