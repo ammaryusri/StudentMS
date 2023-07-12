@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-end m-1">
+  <button
+    type="button"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    class="btn btn-success"
+    (click)="clickAddClassroom()"
+  >
+    Add Classroom
+  </button>
+</div>
+<table class="table mt-3">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Classroom Name</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let classroom of classrooms">
+      <td>{{ classroom.classroomName }}</td>
+      <td>
+        <button
+          class="btn btn-info"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="onEdit(classroom)"
+        >
+          Edit
+        </button>
+        <button
+          class="btn btn-danger mx-3"
+          (click)="deleteClassroom(classroom)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Classroom Details
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formValue">
+          <div class="mb-3">
+            <label class="form-label">Classroom Name</label>
+            <input
+              type="text"
+              formControlName="classroomName"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('classroomName')?.invalid &&
+                formValue.get('classroomName')?.touched
+              "
+              class="text-danger"
+            >
+              Classroom Name is required.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="cancel"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          *ngIf="showAdd"
+          (click)="postClassrooms()"
+          class="btn btn-primary"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          *ngIf="showUpdate"
+          (click)="updateClassroom()"
+          class="btn btn-primary"
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-toast></ng-toast>

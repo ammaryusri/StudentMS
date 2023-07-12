@@ -1,0 +1,267 @@
+<div class="d-flex justify-content-end m-1">
+  <button
+    type="button"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    class="btn btn-success"
+    (click)="clickAddStudent()"
+  >
+    Add Student
+  </button>
+</div>
+<table class="table mt-3">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Contact Person</th>
+      <th scope="col">Contact No</th>
+      <th scope="col">Email Address</th>
+      <th scope="col">Date Of Birth</th>
+      <th scope="col">Age</th>
+      <th scope="col">Classroom</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of std$ | async">
+      <td>{{ student.firstName }}</td>
+      <td>{{ student.lastName }}</td>
+      <td>{{ student.contactPerson }}</td>
+      <td>{{ student.contactNo }}</td>
+      <td>{{ student.emailAddress }}</td>
+      <td>{{ student.dateOfBirth }}</td>
+      <td>{{ student.age }}</td>
+      <!-- <td>{{student.classroomId}}</td> -->
+      <td>{{ classRoomNameMap.get(student?.classroomId) }}</td>
+      <td>
+        <button
+          class="btn btn-info"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="onEdit(student)"
+        >
+          Edit
+        </button>
+        <button class="btn btn-danger mx-3" (click)="deleteStudent(student)">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Student Details</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formValue">
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input
+              type="text"
+              formControlName="firstName"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('firstName')?.invalid &&
+                formValue.get('firstName')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('firstName')?.errors?.['required']">
+                First Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input
+              type="text"
+              formControlName="lastName"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('lastName')?.invalid &&
+                formValue.get('lastName')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('lastName')?.errors?.['required']">
+                Last Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact Person</label>
+            <input
+              type="text"
+              formControlName="contactPerson"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('contactPerson')?.invalid &&
+                formValue.get('contactPerson')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('contactPerson')?.errors?.['required']">
+                Contact Person is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact No</label>
+            <input
+              type="text"
+              formControlName="contactNo"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('contactNo')?.invalid &&
+                formValue.get('contactNo')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('contactNo')?.errors?.['required']">
+                Contact No is required.
+              </div>
+              <div *ngIf="formValue.get('contactNo')?.errors?.['pattern']">
+                Please enter a valid mobile number.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >Email address</label
+            >
+            <input
+              type="email"
+              formControlName="emailAddress"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+                formValue.get('emailAddress')?.invalid &&
+                formValue.get('emailAddress')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('emailAddress')?.errors?.['required']">
+                Email address is required.
+              </div>
+              <div *ngIf="formValue.get('emailAddress')?.errors?.['email']">
+                Please enter a valid email address.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date of birth</label>
+            <input
+              type="date"
+              formControlName="dateOfBirth"
+              class="form-control"
+              (change)="calculateAge()"
+            />
+            <div
+              *ngIf="
+                formValue.get('dateOfBirth')?.invalid &&
+                formValue.get('dateOfBirth')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('dateOfBirth')?.errors?.['required']">
+                Date of Birth is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" formControlName="age" class="form-control" />
+            <div
+              *ngIf="
+                formValue.get('age')?.invalid && formValue.get('age')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('age')?.errors?.['required']">
+                Age is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Classroom</label>
+            <select formControlName="classroomId" class="form-control">
+              <option value="">Select a classroom</option>
+              <option
+                *ngFor="let classroom of allClassrooms"
+                [value]="classroom.classroomId"
+              >
+                {{ classroom.classroomName }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                formValue.get('classroomId')?.invalid &&
+                formValue.get('classroomId')?.touched
+              "
+              class="text-danger"
+            >
+              <div *ngIf="formValue.get('classroomId')?.errors?.['required']">
+                Classroom is required.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="cancel"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          *ngIf="showAdd"
+          (click)="postStudewntsDetails()"
+          class="btn btn-primary"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          *ngIf="showUpdate"
+          (click)="updateStudent()"
+          class="btn btn-primary"
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-toast></ng-toast>

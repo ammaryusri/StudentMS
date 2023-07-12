@@ -1,0 +1,81 @@
+<div class="card text-center">
+  <form [formGroup]="formValue">
+    <div class="card-header">
+      <h3>TEACHER'S DETAILS</h3>
+    </div>
+    <div class="card-body">
+      <div class="mb-3 d-flex align-items-center">
+        <label class="form-label me-2">Teacher</label>
+        <select
+          formControlName="teacherId"
+          class="form-control p-2"
+          style="width: 400px"
+          (change)="onTeacherChange($event)"
+        >
+          <option value="">Select a teacher</option>
+          <ng-container *ngFor="let teacher of teach">
+            <option [value]="teacher.teacherId">
+              {{ teacher.firstName }} {{ teacher.lastName }}
+            </option>
+          </ng-container>
+        </select>
+        <div class="ms-3"></div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="getAllocatedClassroom()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <div class="card-footer text-body-secondary">
+      <div class="mb-3 d-flex align-items-center">
+        <label class="form-label me-2">Classroom</label>
+        <select
+          formControlName="classroomId"
+          class="form-control p-2"
+          style="width: 400px"
+        >
+          <option value="">Select a classroom</option>
+          <ng-container *ngFor="let classrooms of classroom">
+            <option [value]="classrooms.classroomId">
+              {{ classrooms.classroomName }}
+            </option>
+          </ng-container>
+        </select>
+        <div class="ms-3"></div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="postAllocatesClassrooms()"
+        >
+          Allocate
+        </button>
+      </div>
+    </div>
+  </form>
+  <h3>ALLOCATED CLASSROOM'S</h3>
+  <table class="table mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Classroom</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let allsub of allAllocatedClassroom$ | async">
+        <td>{{ classroomNameMap.get(allsub?.classroomId) }}</td>
+        <td>
+          <button
+            class="btn btn-danger mx-3"
+            (click)="deleteAllocatedClassroom(allsub)"
+          >
+            De-Allocate
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-toast></ng-toast>
