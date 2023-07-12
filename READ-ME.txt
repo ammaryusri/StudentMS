@@ -1,0 +1,20 @@
+<------------------------------------- Welcome to Collage Management System ----------------------------------------->
+
+## Requirements
+- Angular
+- Node.js
+- .NET Core framework
+- SQL Server
+
+## Project setup steps
+
++ Angular (FRONT-END) [FOLDER NAME: StudentMSUI]
+	- Un-zip the file and open terminal
+	- type "npm install" to install the required node files
+	- type "ng serve" to run the project (If there is any authentication problem, run this in terminal "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass" and run 	  "ng serve").
+
++ .NET Core (Backend) [FOLDER NAME: StudentMS]
+	- Build & Run the project (Be midfull of the PORT's)
+
++ SQL Server (DB) [FOLDER NAME: DB]
+	- Have attached the query used for table creation. please refer the document and setup respectively.
